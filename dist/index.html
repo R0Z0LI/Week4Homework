@@ -6,11 +6,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css" />
-    <title>Document</title>
+    <title>Weight tracker</title>
 </head>
 
-<body>
+<body class="body">
+    <div class="header">
+        <h1>Weight tracker</h1>
+    </div>
+    <div class="add-weight">
+        <div class="date add-weight__fields">
+            <p class="date__text">
+                Date
+            </p>
+            <input type="date" name="Date" id="date" class="date__input">
+        </div>
+        <div class="weight add-weight__fields">
+            <p class="weight__text">
+                Weight
+            </p>
+            <input type="number" name="Weight" id="weight" class="weight__input">
+        </div>
+        <input type="button" value="Add" class="add-weight__btn" id="add-btn">
+    </div>
+    <div class="history">
+        <h2 class="history__text">History</h2>
+        <div class="history__container">
+
+        </div>
+    </div>
+    <div class="statistics">
+        <div class="statistics__period">
+            <button class="btn" id="week">Week</button>
+            <button class="btn" id="month">Month</button>
+            <button class="btn" id="year">Year</button>
+            <button class="btn" id="lifetime">Lifetime</button>
+        </div>
+        <div class="chart" id="chart">
+
+        </div>
+        <div class="current-weight">
+            <h3 class="current-weight__text">Current weight</h3>
+        </div>
+        <div class="start-weight">
+            <h3 class="start-weight__text">Weight at the start of the period</h3>
+        </div>
+        <div class="progress">
+            <h3 class="progress__text">Progress</h3>
+        </div>
+    </div>
+    <script>var exports = {};</script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="script.js" charset="utf-8"></script>
+
 </body>
 
 </html>

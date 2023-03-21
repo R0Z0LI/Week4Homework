@@ -1,1 +1,51 @@
-/*# sourceMappingURL=main.css.map */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.body {
+  margin-top: 3rem;
+  margin-left: 5rem;
+}
+
+.header {
+  font-weight: bold;
+}
+
+.add-weight {
+  display: flex;
+  padding-top: 1rem;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.add-weight__fields {
+  padding-top: 0.5rem;
+}
+.add-weight__btn {
+  max-height: 2rem;
+  max-width: 4rem;
+  margin: 0.2rem;
+  border-radius: 5px;
+  background: white;
+  border: 0.2rem solid black;
+  box-shadow: 0px 10px 20px -6px rgba(0, 0, 0, 0.12);
+}
+
+.weight {
+  padding: 0.2rem;
+}
+.weight__input {
+  max-height: 2.2rem;
+}
+
+.date {
+  padding: 0.2rem;
+}
+.date__input {
+  max-height: 2.4rem;
+}
+
+.history {
+  padding-top: 2rem;
+}/*# sourceMappingURL=main.css.map */
