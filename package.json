@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/date-fns": "^2.6.0",
     "apexcharts": "^3.37.1",
     "date-fns": "^2.29.3"
   }
