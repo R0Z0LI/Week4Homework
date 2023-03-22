@@ -20,7 +20,6 @@ type weightElement = {
 let historyData: weightElement[] = [];
 
 dateDiv.max = new Date().toISOString().slice(0, 19);
-console.log(new Date().toISOString().slice(0, 19));
 
 addButton?.addEventListener("click", addWeight);
 
@@ -30,8 +29,12 @@ function addWeight() {
     weight: +weightDiv.value,
     date: dateDiv.value,
   };
-  const { chosenDate } = createDate(firstElem);
-  historyData.push(firstElem);
+  console.log(firstElem.date);
+  if (firstElem.weight === 0 || firstElem.date === "") {
+    window.alert("You should set a weight and date aswell!");
+  } else {
+    historyData.push(firstElem);
+  }
 
   sort();
 

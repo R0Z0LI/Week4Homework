@@ -11,7 +11,6 @@ const thisHour = date.getUTCHours().toString();
 const thisMinutes = date.getUTCMinutes().toString();
 let historyData = [];
 dateDiv.max = new Date().toISOString().slice(0, 19);
-console.log(new Date().toISOString().slice(0, 19));
 addButton === null || addButton === void 0 ? void 0 : addButton.addEventListener("click", addWeight);
 function addWeight() {
     deletePreviousElements();
@@ -19,8 +18,13 @@ function addWeight() {
         weight: +weightDiv.value,
         date: dateDiv.value,
     };
-    const { chosenDate } = createDate(firstElem);
-    historyData.push(firstElem);
+    console.log(firstElem.date);
+    if (firstElem.weight === 0 || firstElem.date === "") {
+        window.alert("You should set a weight and date aswell!");
+    }
+    else {
+        historyData.push(firstElem);
+    }
     sort();
     let i = 0;
     historyData.forEach((element) => {
