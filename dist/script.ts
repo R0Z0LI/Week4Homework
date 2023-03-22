@@ -155,11 +155,28 @@ function createDiagram(id: string) {
       categories: series,
     },
   };
+
   // @ts-ignore
   var chart = new ApexCharts(document.querySelector("#chart"), options);
 
   chart.render();
 
+  chart.updateOptions({
+    series: [
+      {
+        name: "sales",
+        data: axis,
+      },
+    ],
+    xaxis: {
+      categories: series,
+    },
+  });
+
+  createProgressDialog();
+}
+
+function createProgressDialog() {
   const deleteWeight = document
     .getElementById("current-weight__value")
     ?.remove();

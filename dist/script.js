@@ -103,7 +103,6 @@ function deletePreviousElements() {
     }
 }
 function createDiagram(id) {
-    var _a, _b, _c;
     let series = [];
     let axis = [];
     graphData.length = 0;
@@ -130,6 +129,21 @@ function createDiagram(id) {
     // @ts-ignore
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
+    chart.updateOptions({
+        series: [
+            {
+                name: "sales",
+                data: axis,
+            },
+        ],
+        xaxis: {
+            categories: series,
+        },
+    });
+    createProgressDialog();
+}
+function createProgressDialog() {
+    var _a, _b, _c;
     const deleteWeight = (_a = document
         .getElementById("current-weight__value")) === null || _a === void 0 ? void 0 : _a.remove();
     const deleteStart = (_b = document.getElementById("start-weight__value")) === null || _b === void 0 ? void 0 : _b.remove();
