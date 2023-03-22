@@ -4,10 +4,14 @@ const weightDiv = document.getElementById("weight");
 const dateDiv = document.getElementById("date");
 const historyContainer = document.getElementById("history__container");
 const date = new Date();
-const thisYear = date.getFullYear.toString;
-const thisMonth = date.getMonth.toString;
-const today = date.getDay.toString;
+const thisYear = date.getFullYear().toString();
+const thisMonth = date.getUTCMonth().toString();
+const thisDay = date.getUTCDate().toString();
+const thisHour = date.getUTCHours().toString();
+const thisMinutes = date.getUTCMinutes().toString();
 let historyData = [];
+dateDiv.max = new Date().toISOString().slice(0, 19);
+console.log(new Date().toISOString().slice(0, 19));
 addButton === null || addButton === void 0 ? void 0 : addButton.addEventListener("click", addWeight);
 function addWeight() {
     deletePreviousElements();
@@ -15,46 +19,53 @@ function addWeight() {
         weight: +weightDiv.value,
         date: dateDiv.value,
     };
+    const { chosenDate } = createDate(firstElem);
     historyData.push(firstElem);
     sort();
     let i = 0;
     historyData.forEach((element) => {
         if (i < 10) {
-            const year = element.date.slice(0, 4);
-            const month = element.date.slice(5, 7);
-            const day = element.date.slice(8, 10);
-            const hour = element.date.slice(11, 13);
-            const min = element.date.slice(14, 16);
-            const chosenDate = new Date(+year, +month, +day, +hour, +min);
+            const { chosenDate, day, month, year, hour, min } = createDate(element);
             const newDivElement = document.createElement("div");
             newDivElement.setAttribute("id", "history__row_" + i);
             historyContainer.appendChild(newDivElement);
             const newWeight = document.createElement("span");
-            newWeight.innerHTML = element.weight.toString() + " kg    ";
+            let roundWeight = (Math.round(element.weight * 100) / 100).toFixed(1);
+            newWeight.innerHTML = roundWeight.toString() + " kg    ";
             const newDate = document.createElement("span");
-            console.log(chosenDate.getUTCDate());
-            console.log(date.getUTCDate());
-            if (chosenDate.getFullYear() !== date.getFullYear()) {
-                let string = day + " " + month + " " + year + " at " + hour + ":" + min;
-                newDate.innerHTML = string;
-            }
-            else if (chosenDate.getUTCDate() === date.getUTCDate()) {
-                let string = "today at " + hour + ":" + min;
-                newDate.innerHTML = string;
-            }
-            else if (chosenDate.getUTCDate() === date.getUTCDate() - 1) {
-                let string = "yesterday at " + hour + ":" + min;
-                newDate.innerHTML = string;
-            }
-            else {
-                let string = day + " " + month + " at " + hour + ":" + min;
-                newDate.innerHTML = string;
-            }
+            createDateFormat(chosenDate, day, month, year, hour, min, newDate);
             newDivElement.appendChild(newWeight);
             newDivElement.appendChild(newDate);
         }
         i++;
     });
+}
+function createDateFormat(chosenDate, day, month, year, hour, min, newDate) {
+    if (chosenDate.getFullYear() !== date.getFullYear()) {
+        let string = day + " " + month + " " + year + " at " + hour + ":" + min;
+        newDate.innerHTML = string;
+    }
+    else if (chosenDate.getUTCDate() === date.getUTCDate()) {
+        let string = "today at " + hour + ":" + min;
+        newDate.innerHTML = string;
+    }
+    else if (chosenDate.getUTCDate() === date.getUTCDate() - 1) {
+        let string = "yesterday at " + hour + ":" + min;
+        newDate.innerHTML = string;
+    }
+    else {
+        let string = day + " " + month + " at " + hour + ":" + min;
+        newDate.innerHTML = string;
+    }
+}
+function createDate(element) {
+    const year = element.date.slice(0, 4);
+    const month = element.date.slice(5, 7);
+    const day = element.date.slice(8, 10);
+    const hour = element.date.slice(11, 13);
+    const min = element.date.slice(14, 16);
+    const chosenDate = new Date(+year, +month, +day, +hour, +min);
+    return { chosenDate, day, month, year, hour, min };
 }
 function sort() {
     for (let i = 0; i < historyData.length; i++) {
