@@ -4,13 +4,15 @@ const dateDiv = document.getElementById("date")! as HTMLInputElement;
 const historyContainer = document.getElementById(
   "history__container"
 )! as HTMLInputElement;
+const weekBtn = document.getElementById("week");
+const monthBtn = document.getElementById("month");
+const yearBtn = document.getElementById("year");
+const lifetime = document.getElementById("lifetime");
 
+const currentWeightDiv = document.getElementById("current-weight");
+const startWeightDiv = document.getElementById("start-weight");
+const progressDiv = document.getElementById("progress");
 const date = new Date();
-const thisYear = date.getFullYear().toString();
-const thisMonth = date.getUTCMonth().toString();
-const thisDay = date.getUTCDate().toString();
-const thisHour = date.getUTCHours().toString();
-const thisMinutes = date.getUTCMinutes().toString();
 
 type weightElement = {
   date: string;
@@ -18,10 +20,27 @@ type weightElement = {
 };
 
 let historyData: weightElement[] = [];
+let graphData: weightElement[] = [];
 
 dateDiv.max = new Date().toISOString().slice(0, 19);
 
 addButton?.addEventListener("click", addWeight);
+
+weekBtn?.addEventListener("click", function () {
+  createDiagram("week");
+});
+
+monthBtn?.addEventListener("click", function () {
+  createDiagram("month");
+});
+
+yearBtn?.addEventListener("click", function () {
+  createDiagram("year");
+});
+
+lifetime?.addEventListener("click", function () {
+  createDiagram("lifetime");
+});
 
 function addWeight() {
   deletePreviousElements();
@@ -29,14 +48,13 @@ function addWeight() {
     weight: +weightDiv.value,
     date: dateDiv.value,
   };
-  console.log(firstElem.date);
   if (firstElem.weight === 0 || firstElem.date === "") {
     window.alert("You should set a weight and date aswell!");
   } else {
     historyData.push(firstElem);
   }
 
-  sort();
+  sort(historyData);
 
   let i = 0;
   historyData.forEach((element) => {
@@ -92,13 +110,13 @@ function createDate(element: weightElement) {
   return { chosenDate, day, month, year, hour, min };
 }
 
-function sort() {
-  for (let i = 0; i < historyData.length; i++) {
-    for (let j = 0; j < historyData.length; j++) {
-      if (historyData[i].date > historyData[j].date) {
-        let tmp = historyData[i];
-        historyData[i] = historyData[j];
-        historyData[j] = tmp;
+function sort(data: weightElement[]) {
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data.length; j++) {
+      if (data[i].date > data[j].date) {
+        let tmp = data[i];
+        data[i] = data[j];
+        data[j] = tmp;
       }
     }
   }
@@ -110,5 +128,110 @@ function deletePreviousElements() {
       "history__row_" + i
     );
     history__container__firstDiv?.remove();
+  }
+}
+
+function createDiagram(id: string) {
+  let series: string[] = [];
+  let axis: number[] = [];
+  graphData.length = 0;
+  setDiagramAxis(id);
+  graphData.forEach((element) => {
+    series.push(element.date);
+    axis.push(element.weight);
+  });
+  console.log(axis);
+  var options = {
+    chart: {
+      type: "line",
+    },
+    series: [
+      {
+        name: "sales",
+        data: axis,
+      },
+    ],
+    xaxis: {
+      categories: series,
+    },
+  };
+  // @ts-ignore
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+  chart.render();
+
+  const deleteWeight = document
+    .getElementById("current-weight__value")
+    ?.remove();
+  const deleteStart = document.getElementById("start-weight__value")?.remove();
+  const deleteProgress = document.getElementById("progress__value")?.remove();
+
+  const currentWeight = graphData[graphData.length - 1].weight;
+  const startWeigth = graphData[0].weight;
+  const progress = currentWeight - startWeigth;
+
+  const newCurrentWeight = document.createElement("span");
+  const newStartWeight = document.createElement("span");
+  const newProgress = document.createElement("span");
+
+  newCurrentWeight.setAttribute("id", "current-weight__value");
+  newStartWeight.setAttribute("id", "start-weight__value");
+  newProgress.setAttribute("id", "progress__value");
+
+  newCurrentWeight.innerHTML = currentWeight.toString();
+  newStartWeight.innerHTML = startWeigth.toString();
+  newProgress.innerHTML = progress.toString();
+
+  currentWeightDiv?.appendChild(newCurrentWeight);
+  startWeightDiv?.appendChild(newStartWeight);
+  progressDiv?.appendChild(newProgress);
+}
+
+function setDiagramAxis(id: string) {
+  if (id === "week") {
+    let first = date.getDate() - (date.getDay() - 1);
+    let last = first + 6;
+    historyData.forEach((element) => {
+      const { chosenDate, day, month, year, hour, min } = createDate(element);
+      console.log(chosenDate.getUTCMonth());
+      console.log(date.getUTCMonth());
+      if (
+        chosenDate.getDate() >= first &&
+        chosenDate.getDate() <= last &&
+        chosenDate.getUTCMonth() === date.getUTCMonth() + 1 &&
+        chosenDate.getFullYear() === date.getFullYear()
+      ) {
+        graphData.push(element);
+        sort(graphData);
+        graphData.reverse();
+      }
+    });
+  } else if (id === "month") {
+    historyData.forEach((element) => {
+      const { chosenDate, day, month, year, hour, min } = createDate(element);
+      if (
+        chosenDate.getUTCMonth() === date.getUTCMonth() + 1 &&
+        chosenDate.getFullYear() === date.getFullYear()
+      ) {
+        graphData.push(element);
+        sort(graphData);
+        graphData.reverse();
+      }
+    });
+  } else if (id === "year") {
+    historyData.forEach((element) => {
+      const { chosenDate, day, month, year, hour, min } = createDate(element);
+      if (chosenDate.getFullYear() === date.getFullYear()) {
+        graphData.push(element);
+        sort(graphData);
+        graphData.reverse();
+      }
+    });
+  } else if (id === "lifetime") {
+    historyData.forEach((element) => {
+      graphData.push(element);
+      sort(graphData);
+      graphData.reverse();
+    });
   }
 }
