@@ -14,6 +14,21 @@ const startWeightDiv = document.getElementById("start-weight");
 const progressDiv = document.getElementById("progress");
 const date = new Date();
 
+const months = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "maj",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "okt",
+  "nov",
+  "dec",
+];
+
 type weightElement = {
   date: string;
   weight: number;
@@ -91,7 +106,8 @@ function createDateFormat(
   newDate: HTMLSpanElement
 ) {
   if (chosenDate.getFullYear() !== date.getFullYear()) {
-    let string = day + " " + month + " " + year + " at " + hour + ":" + min;
+    let monthWord: string = createMonthFormat(month);
+    let string = day + " " + monthWord + " " + year + " at " + hour + ":" + min;
     newDate.innerHTML = string;
   } else if (chosenDate.getUTCDate() === date.getUTCDate()) {
     let string = "today at " + hour + ":" + min;
@@ -100,7 +116,8 @@ function createDateFormat(
     let string = "yesterday at " + hour + ":" + min;
     newDate.innerHTML = string;
   } else {
-    let string = day + " " + month + " at " + hour + ":" + min;
+    let monthWord: string = createMonthFormat(month);
+    let string = day + " " + monthWord + " at " + hour + ":" + min;
     newDate.innerHTML = string;
   }
 }
@@ -144,7 +161,9 @@ function createDiagram(id: string) {
   graphData.length = 0;
   setDiagramAxis(id);
   graphData.forEach((element) => {
-    series.push(element.date);
+    const { chosenDate, day, month, year, hour, min } = createDate(element);
+    let monthWord: string = createMonthFormat(month);
+    series.push(day + " " + monthWord);
     axis.push(element.weight);
   });
 
@@ -183,6 +202,17 @@ function createDiagram(id: string) {
   createProgressDialog();
 }
 
+function createMonthFormat(month: string) {
+  const slicedMonth = month.slice(1);
+  let monthWord: string = "";
+  for (let i = 0; i < months.length; i++) {
+    if (+month === i + 1) {
+      monthWord = months[i];
+    }
+  }
+  return monthWord;
+}
+
 function createProgressDialog() {
   const deleteWeight = document
     .getElementById("current-weight__value")
@@ -198,13 +228,17 @@ function createProgressDialog() {
   const newStartWeight = document.createElement("span");
   const newProgress = document.createElement("span");
 
+  newCurrentWeight.classList.add("weight-difference__value");
+  newStartWeight.classList.add("weight-difference__value");
+  newProgress.classList.add("weight-difference__value");
+
   newCurrentWeight.setAttribute("id", "current-weight__value");
   newStartWeight.setAttribute("id", "start-weight__value");
   newProgress.setAttribute("id", "progress__value");
 
-  newCurrentWeight.innerHTML = currentWeight.toString();
-  newStartWeight.innerHTML = startWeigth.toString();
-  newProgress.innerHTML = progress.toString();
+  newCurrentWeight.innerHTML = currentWeight.toString() + " Kg";
+  newStartWeight.innerHTML = startWeigth.toString() + " Kg";
+  newProgress.innerHTML = progress.toString() + " Kg";
 
   currentWeightDiv?.appendChild(newCurrentWeight);
   startWeightDiv?.appendChild(newStartWeight);

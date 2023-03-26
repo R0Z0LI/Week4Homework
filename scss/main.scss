@@ -117,6 +117,11 @@ input::-webkit-inner-spin-button {
     height: 8rem;
     text-align: center;
   }
+  &__value {
+    margin-top: 2rem;
+    font-size: 3rem;
+    font-weight: bold;
+  }
 }
 .progress {
   width: 100%;

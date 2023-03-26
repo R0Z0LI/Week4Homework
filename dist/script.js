@@ -10,6 +10,20 @@ var currentWeightDiv = document.getElementById("current-weight");
 var startWeightDiv = document.getElementById("start-weight");
 var progressDiv = document.getElementById("progress");
 var date = new Date();
+var months = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "maj",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "okt",
+    "nov",
+    "dec",
+];
 var tmpId = "week";
 var historyData = [];
 var graphData = [];
@@ -41,7 +55,7 @@ function addWeight() {
         historyData.push(firstElem);
     }
     sort(historyData);
-    console.log(historyData);
+    //console.log(historyData);
     //saveData();
     var i = 0;
     historyData.forEach(function (element) {
@@ -65,7 +79,8 @@ function addWeight() {
 }
 function createDateFormat(chosenDate, day, month, year, hour, min, newDate) {
     if (chosenDate.getFullYear() !== date.getFullYear()) {
-        var string = day + " " + month + " " + year + " at " + hour + ":" + min;
+        var monthWord = createMonthFormat(month);
+        var string = day + " " + monthWord + " " + year + " at " + hour + ":" + min;
         newDate.innerHTML = string;
     }
     else if (chosenDate.getUTCDate() === date.getUTCDate()) {
@@ -77,7 +92,8 @@ function createDateFormat(chosenDate, day, month, year, hour, min, newDate) {
         newDate.innerHTML = string;
     }
     else {
-        var string = day + " " + month + " at " + hour + ":" + min;
+        var monthWord = createMonthFormat(month);
+        var string = day + " " + monthWord + " at " + hour + ":" + min;
         newDate.innerHTML = string;
     }
 }
@@ -114,7 +130,9 @@ function createDiagram(id) {
     graphData.length = 0;
     setDiagramAxis(id);
     graphData.forEach(function (element) {
-        series.push(element.date);
+        var _a = createDate(element), chosenDate = _a.chosenDate, day = _a.day, month = _a.month, year = _a.year, hour = _a.hour, min = _a.min;
+        var monthWord = createMonthFormat(month);
+        series.push(day + " " + monthWord);
         axis.push(element.weight);
     });
     var options = {
@@ -147,6 +165,16 @@ function createDiagram(id) {
     });
     createProgressDialog();
 }
+function createMonthFormat(month) {
+    var slicedMonth = month.slice(1);
+    var monthWord = "";
+    for (var i = 0; i < months.length; i++) {
+        if (+month === i + 1) {
+            monthWord = months[i];
+        }
+    }
+    return monthWord;
+}
 function createProgressDialog() {
     var _a, _b, _c;
     var deleteWeight = (_a = document
@@ -159,12 +187,15 @@ function createProgressDialog() {
     var newCurrentWeight = document.createElement("span");
     var newStartWeight = document.createElement("span");
     var newProgress = document.createElement("span");
+    newCurrentWeight.classList.add("weight-difference__value");
+    newStartWeight.classList.add("weight-difference__value");
+    newProgress.classList.add("weight-difference__value");
     newCurrentWeight.setAttribute("id", "current-weight__value");
     newStartWeight.setAttribute("id", "start-weight__value");
     newProgress.setAttribute("id", "progress__value");
-    newCurrentWeight.innerHTML = currentWeight.toString();
-    newStartWeight.innerHTML = startWeigth.toString();
-    newProgress.innerHTML = progress.toString();
+    newCurrentWeight.innerHTML = currentWeight.toString() + " Kg";
+    newStartWeight.innerHTML = startWeigth.toString() + " Kg";
+    newProgress.innerHTML = progress.toString() + " Kg";
     currentWeightDiv === null || currentWeightDiv === void 0 ? void 0 : currentWeightDiv.appendChild(newCurrentWeight);
     startWeightDiv === null || startWeightDiv === void 0 ? void 0 : startWeightDiv.appendChild(newStartWeight);
     progressDiv === null || progressDiv === void 0 ? void 0 : progressDiv.appendChild(newProgress);
@@ -214,6 +245,7 @@ function setDiagramAxis(id) {
         });
     }
 }
+//Itt is olyan problémám volt, hogy amikor a typescript-et átkonvertálja js-be, az import helyett require-t használ
 /*function saveData() {
   console.log("HEY");
   historyData.forEach((element) => {
@@ -226,4 +258,14 @@ function setDiagramAxis(id) {
       }
     });
   });
+}
+
+const loadFile = async () {
+  try{
+    const data = await fs.promises.readFile("./history.json", {
+      encoding: "utf-8",
+    });
+  } catch (error){
+    console.error(error)
+  }
 }*/
