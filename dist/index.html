@@ -15,16 +15,18 @@
     </div>
     <div class="add-weight">
         <div class="date add-weight__fields">
-            <p class="date__text">
+            <label for="date" class="date__text">
                 Date
-            </p>
+            </label>
             <input type="datetime-local" name="Date" id="date" class="date__input">
         </div>
         <div class="weight add-weight__fields">
-            <p class="weight__text">
+            <label for="weight" class="weight__text">
                 Weight
-            </p>
-            <input type="number" name="Weight" id="weight" class="weight__input">
+
+                <input type="number" name="Weight" id="weight" class="weight__input">
+                <span class="weight__measurement">Kg</span>
+            </label>
         </div>
         <input type="button" value="Add" class="add-weight__btn" id="add-btn">
     </div>
@@ -36,20 +38,23 @@
     </div>
     <div class="statistics">
         <div class="statistics__period">
-            <button class="btn" id="week">Week</button>
-            <button class="btn" id="month">Month</button>
-            <button class="btn" id="year">Year</button>
-            <button class="btn" id="lifetime">Lifetime</button>
+            <button class="statistics__btn" id="week">Week</button>
+            <button class="statistics__btn" id="month">Month</button>
+            <button class="statistics__btn" id="year">Year</button>
+            <button class="statistics__btn" id="lifetime">Lifetime</button>
         </div>
         <div class="chart" id="chart">
 
         </div>
-        <div class="current-weight" id="current-weight">
-            <h3 class="current-weight__text">Current weight</h3>
+        <div class="weight-difference">
+            <div class="weight-difference__data" id="current-weight">
+                <h3 class="current-weight__text">Current weight</h3>
+            </div>
+            <div class="weight-difference__data" id="start-weight">
+                <h3 class="start-weight__text">Weight at the <br> start of the period</h3>
+            </div>
         </div>
-        <div class="start-weight" id="start-weight">
-            <h3 class="start-weight__text">Weight at the start of the period</h3>
-        </div>
+
         <div class="progress" id="progress">
             <h3 class="progress__text">Progress</h3>
         </div>

@@ -18,11 +18,13 @@ type weightElement = {
   date: string;
   weight: number;
 };
-
+let tmpId: string = "week";
 let historyData: weightElement[] = [];
 let graphData: weightElement[] = [];
 
 dateDiv.max = new Date().toISOString().slice(0, 19);
+
+//createDiagram(tmpId);
 
 addButton?.addEventListener("click", addWeight);
 
@@ -53,7 +55,6 @@ function addWeight() {
   } else {
     historyData.push(firstElem);
   }
-
   sort(historyData);
 
   let i = 0;
@@ -62,6 +63,7 @@ function addWeight() {
       const { chosenDate, day, month, year, hour, min } = createDate(element);
       const newDivElement = document.createElement("div");
       newDivElement.setAttribute("id", "history__row_" + i);
+      newDivElement.classList.add("history__rows");
       historyContainer.appendChild(newDivElement);
       const newWeight = document.createElement("span");
       let roundWeight = (Math.round(element.weight * 100) / 100).toFixed(1);
@@ -74,6 +76,7 @@ function addWeight() {
 
     i++;
   });
+  createDiagram(tmpId);
 }
 
 function createDateFormat(
@@ -132,6 +135,8 @@ function deletePreviousElements() {
 }
 
 function createDiagram(id: string) {
+  tmpId = id;
+
   let series: string[] = [];
   let axis: number[] = [];
   graphData.length = 0;
@@ -140,7 +145,7 @@ function createDiagram(id: string) {
     series.push(element.date);
     axis.push(element.weight);
   });
-  console.log(axis);
+
   var options = {
     chart: {
       type: "line",
@@ -206,18 +211,19 @@ function createProgressDialog() {
 
 function setDiagramAxis(id: string) {
   if (id === "week") {
-    let first = date.getDate() - (date.getDay() - 1);
+    let first = date.getDate() - date.getDay();
     let last = first + 6;
     historyData.forEach((element) => {
       const { chosenDate, day, month, year, hour, min } = createDate(element);
-      console.log(chosenDate.getUTCMonth());
-      console.log(date.getUTCMonth());
+      console.log(first);
+      console.log(last);
       if (
         chosenDate.getDate() >= first &&
         chosenDate.getDate() <= last &&
         chosenDate.getUTCMonth() === date.getUTCMonth() + 1 &&
         chosenDate.getFullYear() === date.getFullYear()
       ) {
+        console.log("hey");
         graphData.push(element);
         sort(graphData);
         graphData.reverse();
