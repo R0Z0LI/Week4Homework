@@ -124,6 +124,9 @@ input::-webkit-inner-spin-button {
   font-size: 3rem;
   font-weight: bold;
 }
+.weight-difference__text {
+  height: 3rem;
+}
 
 .progress {
   width: 100%;

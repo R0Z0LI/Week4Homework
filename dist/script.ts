@@ -198,18 +198,28 @@ function createDiagram(id: string) {
       categories: series,
     },
   });
-
-  createProgressDialog();
+  if (graphData.length != 0) {
+    createProgressDialog();
+  }
 }
 
 function createMonthFormat(month: string) {
-  const slicedMonth = month.slice(1);
   let monthWord: string = "";
-  for (let i = 0; i < months.length; i++) {
-    if (+month === i + 1) {
-      monthWord = months[i];
+  if (month !== "10" && month !== "11" && month !== "12") {
+    const slicedMonth = month.slice(1);
+    for (let i = 0; i < months.length; i++) {
+      if (+month === i + 1) {
+        monthWord = months[i];
+      }
+    }
+  } else {
+    for (let i = 0; i < months.length; i++) {
+      if (+month === i + 1) {
+        monthWord = months[i];
+      }
     }
   }
+
   return monthWord;
 }
 
