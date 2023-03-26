@@ -56,6 +56,8 @@ function addWeight() {
     historyData.push(firstElem);
   }
   sort(historyData);
+  //console.log(historyData);
+  //saveData();
 
   let i = 0;
   historyData.forEach((element) => {
@@ -215,15 +217,12 @@ function setDiagramAxis(id: string) {
     let last = first + 6;
     historyData.forEach((element) => {
       const { chosenDate, day, month, year, hour, min } = createDate(element);
-      console.log(first);
-      console.log(last);
       if (
         chosenDate.getDate() >= first &&
         chosenDate.getDate() <= last &&
         chosenDate.getUTCMonth() === date.getUTCMonth() + 1 &&
         chosenDate.getFullYear() === date.getFullYear()
       ) {
-        console.log("hey");
         graphData.push(element);
         sort(graphData);
         graphData.reverse();
@@ -258,3 +257,29 @@ function setDiagramAxis(id: string) {
     });
   }
 }
+
+//Itt is olyan problémám volt, hogy amikor a typescript-et átkonvertálja js-be, az import helyett require-t használ
+
+/*function saveData() {
+  console.log("HEY");
+  historyData.forEach((element) => {
+    const jsonData = JSON.stringify(element);
+    fs.writeFile("./history.json", jsonData, (err) => {
+      if (err) {
+        console.log("Error writing file", err);
+      } else {
+        console.log("JSON data is written to the file successfully");
+      }
+    });
+  });
+}
+
+const loadFile = async () {
+  try{
+    const data = await fs.promises.readFile("./history.json", {
+      encoding: "utf-8",
+    });
+  } catch (error){
+    console.error(error)
+  }
+}*/

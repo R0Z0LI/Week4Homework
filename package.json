@@ -12,5 +12,8 @@
     "@types/date-fns": "^2.6.0",
     "apexcharts": "^3.37.1",
     "date-fns": "^2.29.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.10"
   }
 }
