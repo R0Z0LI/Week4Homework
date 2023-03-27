@@ -1,3 +1,5 @@
+$border-color: #000;
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -29,7 +31,7 @@
     margin-right: 2rem;
     border-radius: 5px;
     background: white;
-    border: 0.1rem solid black;
+    border: 0.1rem solid &$border-color;
     box-shadow: 0px 10px 20px -6px rgb(0 0 0 /12%);
   }
 }
@@ -90,7 +92,7 @@ input::-webkit-inner-spin-button {
   &__period {
     display: flex;
     justify-content: space-around;
-    border: 1px solid black;
+    border: 1px solid &$border-color;
   }
 
   &__btn {
@@ -112,7 +114,7 @@ input::-webkit-inner-spin-button {
   justify-content: space-between;
   &__data {
     padding: 1rem;
-    border: 2px solid black;
+    border: 2px solid &$border-color;
     width: 45%;
     height: 8rem;
     text-align: center;
@@ -129,6 +131,6 @@ input::-webkit-inner-spin-button {
 .progress {
   width: 100%;
   height: 8rem;
-  border: 2px solid black;
+  border: 2px solid $border-color;
   text-align: center;
 }
